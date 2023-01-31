@@ -18,8 +18,10 @@ myTimer = setInterval(function () {
     // count down timer every second and finish when time is 0
     currentTimeEl.text(moment().format("HH:mm:ss"));
     currentHour = parseInt(moment().format("H"));
+    console.log(previousHour);
     if (currentHour !== previousHour) {
 
+        console.log("change in hour");
         let strTestArea = `textarea.${currentHour}`;
         $(strTestArea).addClass("present").removeClass("future");
         strTestArea = `textarea.${previousHour}`;
