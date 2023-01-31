@@ -17,9 +17,10 @@ myTimer = setInterval(function () {
 for (let time=8; time<18; time++) {
     // create a row for each hour
     let row = $("<div></div>");
-    row.addClass("row");
     // add hour as class
     row.addClass(String(time));
+    row.attr("id", String(time));
+    row.addClass("row");
     timeContainer.append(row);
 
     // time to the left hand side
@@ -33,13 +34,19 @@ for (let time=8; time<18; time++) {
     let appointmentBlock = $("<textarea></textarea>");
     appointmentBlock.addClass(String(time));
     appointmentBlock.addClass("col-10 description time-block");
+    appointmentBlock.val(localStorage.getItem(String(time)));
 
     // save button to save appointment
     let saveButton = $('<button></button>');
     saveButton.addClass(String(time));
     saveButton.addClass("col-1 saveBtn fas fa-save");
     saveButton.on("click", function (event) {
-        console.log(this);
+
+        let timeId = $(this).parent().attr("id");
+        // get the text in the corresponding text area to save into local storage
+        let strTestArea = `textarea.${timeId}`;
+        localStorage.setItem(timeId, $(strTestArea).val());
+
     })
 
 
