@@ -19,6 +19,11 @@ $(function() {
     let currentHour = parseInt(date.format("H"));
     let previousHour = parseInt(date.format("H"));
 
+    let storeAppointments = JSON.parse(localStorage.getItem("storeAppointments"));
+    if (storeAppointments === null) {
+        storeAppointments = {};
+    }
+
     myTimer = setInterval(function () {
 
         // time updated every second
@@ -57,7 +62,9 @@ $(function() {
         let appointmentBlock = $("<textarea></textarea>");
         appointmentBlock.addClass(String(time));
         appointmentBlock.addClass("col-10 description");
-        appointmentBlock.val(localStorage.getItem(String(time)));
+        if (storeAppointments !== null) {
+            appointmentBlock.val(storeAppointments[String(time)]);
+        }
 
         // save button to save appointment
         let saveButton = $('<button></button>');
@@ -68,7 +75,8 @@ $(function() {
             let timeId = $(this).parent().attr("id");
             // get the text in the corresponding text area to save into local storage
             let strTestArea = `textarea.${timeId}`;
-            localStorage.setItem(timeId, $(strTestArea).val());
+            storeAppointments[timeId] = $(strTestArea).val();
+            localStorage.setItem("storeAppointments", JSON.stringify(storeAppointments));
             stored.removeClass("hide")
 
             const myTimeout = setTimeout(function () {stored.addClass("hide")}, 2000);
